@@ -62,7 +62,7 @@ public:
     sort(b.begin(), b.end());
     if (a != b)
       return -1;
-    if (a == b)
+    if (A == B)
       return 0;
 
     int solution = 0;
@@ -70,6 +70,14 @@ public:
 
 //ABAC
 //ABCA
+    for (int i = A.size() - 1, j = B.size() - 1; i >= 0 && j >= 0; --i) {
+      if (A[i] != B[j]) {
+        solution++;
+      }
+      else {
+        --j;
+      }
+    }
     return solution;
   }
 
