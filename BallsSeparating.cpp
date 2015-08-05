@@ -88,7 +88,7 @@ public:
       boxCost[i] = minCost;
       solution += minCost;
 
-      color_t c;
+      color_t c = RED;
       if (redCost[i] == minCost) {
         c = RED;
         redCost[i] = INF_INT;
@@ -109,8 +109,8 @@ public:
     while (colors_found.size() != COLOR_MAX) {
 
       int minCost = INF_INT;
-      int minCostBox;
-      color_t minCostColor;
+      int minCostBox = 0;
+      color_t minCostColor = RED;
 
       for (size_t i = 0; i < red.size(); ++i) {
         if (redCost[i] < minCost) {
