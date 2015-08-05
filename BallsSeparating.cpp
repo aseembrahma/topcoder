@@ -16,6 +16,7 @@
 
 #define DEBUG 0
 #define ARR_SIZE(x) ((sizeof(x)) / (sizeof(x[0])))
+#define INF_INT numeric_limits<int>::max()
 
 using namespace std;
 
@@ -59,31 +60,94 @@ class BallsSeparating {
 public:
   int minOperations(vector<int> red, vector<int> green, vector<int> blue) {
     int solution = 0;
-    vector<int> redCost, greenCost, blueCost;
 
     if (red.size() < 3)
       return -1;
+
+    typedef enum {
+      RED,
+      GREEN,
+      BLUE,
+      COLOR_MAX
+    } color_t;
+
+    vector<int> redCost(red.size());
+    vector<int> greenCost(red.size());
+    vector<int> blueCost(red.size());
+
+    set<int> colors_found;
+    vector<int> boxCost(red.size());
+    vector<int> boxColor(red.size());
 
     for (size_t i = 0; i < red.size(); ++i) {
       redCost[i] = green[i] + blue[i];
       greenCost[i] = red[i] + blue[i];
       blueCost[i] = red[i] + green[i];
+
+      int minCost = min(redCost[i], min(greenCost[i], blueCost[i]));
+      boxCost[i] = minCost;
+      solution += minCost;
+
+      color_t c;
+      if (redCost[i] == minCost) {
+        c = RED;
+        redCost[i] = INF_INT;
+      }
+      else if (greenCost[i] == minCost) {
+        c = GREEN;
+        greenCost[i] = INF_INT;
+      }
+      else if (blueCost[i] == minCost) {
+        c = BLUE;
+        blueCost[i] = INF_INT;
+      }
+
+      boxColor[i] = c;
+      colors_found.insert(c);
     }
 
-    for (size_t i = 0; i < red.size(); ++i) {
-      if (red.size() - i == 2) {
+    while (colors_found.size() != COLOR_MAX) {
 
-      }
-      else {
-        int red_top = redQ.top(),
-            green_top = greenQ.top(),
-            blue_top = blueQ.top();;
+      int minCost = INF_INT;
+      int minCostBox;
+      color_t minCostColor;
 
-        if (red_top <= green_top && red_top <= blue_top) {
-          solution += 0;
+      for (size_t i = 0; i < red.size(); ++i) {
+        if (redCost[i] < minCost) {
+          minCost = redCost[i];
+          minCostBox = i;
+          minCostColor = RED;
+        }
+        if (greenCost[i] < minCost) {
+          minCost = greenCost[i];
+          minCostBox = i;
+          minCostColor = GREEN;
+        }
+        if (blueCost[i] < minCost) {
+          minCost = blueCost[i];
+          minCostBox = i;
+          minCostColor = BLUE;
         }
       }
+
+      solution -= boxCost[minCostBox];
+      boxCost[minCostBox] = minCost;
+      solution += boxCost[minCostBox];
+
+      if (RED == minCostColor)
+        redCost[minCostBox] = INF_INT;
+      else if (GREEN == minCostColor)
+        greenCost[minCostBox] = INF_INT;
+      else if (BLUE == minCostColor)
+        blueCost[minCostBox] = INF_INT;
+
+      boxColor[minCostBox] = minCostColor;
+
+      colors_found.clear();
+      for (size_t i = 0; i < red.size(); ++i)
+        colors_found.insert(boxColor[i]);
     }
+
     return solution;
   }
 
