@@ -133,5 +133,17 @@ int main(int argc, char* argv[]) {
   {
     test.runTest("1111101", 1);
   }
+  {
+    test.runTest("00000", -1);
+  }
+  {
+    test.runTest("110011011", 3);
+  }
+  {
+    test.runTest("1000101011", -1);
+  }
+  {
+    test.runTest("111011100110101100101110111", 5);
+  }
 }
 
