@@ -64,7 +64,15 @@ void print_vector(const vector<T> &v) {
 
 class FoxPaintingBalls {
   /*
-  */
+   * The colors R, G, B don't matter - the total number of balls is distributed
+   * evenly, and one color might have 1 more than the others.
+   * If the number of each color is the same, the problem is simplified
+   * considerably.
+   * If not, for example, if the number of balls required to make up the
+   * triangle is {4, 3, 3}, then see how many times you can take out 10
+   * (4 + 3 + 3) from each of the colors.
+   * Once that step is complete, run a brute force.
+   */
 
 public:
   LL theMax(LL R, LL G, LL B, int N) {
