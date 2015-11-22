@@ -65,7 +65,18 @@ void print_vector(const vector<T> &v) {
 
 class PointyWizardHats {
   /*
-   * 
+   * The radius of a top hat must be less than a bottom hat. In addition, if
+   * the apexes touch, then we get 2 similar triangles - so Htop/Rtop = 
+   * Hbottom/Rbottom. So for the apexes to not touch, Htop must be greater than
+   * (Hbottom/Rbottom) * Rtop.
+   * Create a graph with an edge from each top hat to a potential bottom hat.
+   * Also add a source and a sink.
+   * The numbering of the vertices would then be [0 (source), tn top hat nodes,
+   * bn bottom hat nodes, tn + bn + 1 (sink node)]
+   * When each edge is added with capacity 1, also add a reverse edge with
+   * capacity 0.
+   * Now check if there is an augmenting path/path from src to sink - and if
+   * so, we can push one more unit of flow.
    */
 
 public:
